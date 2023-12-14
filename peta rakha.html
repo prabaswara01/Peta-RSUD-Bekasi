@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kondisi Cuaca RSUD Bekasi</title>
+    <!-- Sisipkan Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Gaya khusus untuk frame peta -->
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        #weatherTable {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1><center>Kondisi Cuaca di RSUD Bekasi</h1>
+    <!-- Buat div untuk menampilkan peta -->
+    <div id="map"></div>
+
+    <!-- Sisipkan Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Inisialisasi peta dengan koordinat yang ditentukan
+        var map = L.map('map').setView([-6.2419145, 107.0010960
+], 13);
+
+        // Tambahkan peta dasar OSM (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Buat marker untuk lokasi yang ditentukan
+        var customLocationMarker = L.marker([-6.2419145, 107.0010960
+]).addTo(map);
+        customLocationMarker.bindPopup("RSUD Bekasi").openPopup();
+    </script>
+
+    <!-- Sisipkan jQuery untuk mengambil data cuaca dari API -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // ID Wilayah untuk Kota Bekasi
+        var idWilayah = '5002228';
+
+        // Ambil data cuaca dari API
+        $.getJSON('https://ibnux.github.io/BMKG-importer/cuaca/' + idWilayah + '.json', function(data) {
+            var cuaca = data;
+
+            // Buat tabel untuk menampilkan informasi cuaca
+            var weatherTable = document.createElement('table');
+            weatherTable.setAttribute('id', 'weatherTable');
+            weatherTable.innerHTML = '<tr><th>Jam Cuaca</th><th>Cuaca</th><th>Suhu (°C)</th></tr>';
+            
+            for (var i = 0; i < cuaca.cuaca.length; i++) {
+                var cuacaData = cuaca.cuaca[i];
+                weatherTable.innerHTML += '<tr><td>' + cuacaData.jamCuaca + '</td><td>' + cuacaData.cuaca + '</td><td>' + cuacaData.temC + '</td></tr>';
+            }
+
+            // Tampilkan tabel informasi cuaca di bawah peta
+            document.body.appendChild(weatherTable);
+        });
+    </script>
+</body>
+</html>
+map.html
+HTML
+Komentar kelas
+Tugas
+Ditugaskan
+Komentar pribadi
